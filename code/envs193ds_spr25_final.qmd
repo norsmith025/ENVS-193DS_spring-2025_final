@@ -13,18 +13,11 @@ editor: visual
 ```{r}
 #| message: FALSE # hide messages
 
-# read in packages I might use
+# read in packages
 library(tidyverse) # load tidyverse
-library(janitor) # load janitor
 library(MuMIn) # load MuMIn
-library(readxl) # load readxl
 library(DHARMa) # load DHARMa
-library(flextable) # load flextable
-library(rstatix) # load rstatix
-library(gt) # load gt
-library(here) # load here
-library(scales) # load scales
-library(stats)
+library(stats) # load stats
 
 # read in data
 sst <- read_csv("data/SST_update2023.csv") # create sst object from SST_update2023 
@@ -269,6 +262,6 @@ iii. In my Homework 2 visualization, I only show the correlation between my hydr
 
 iv. During Week 9's workshop, the biggest piece of feedback I received was that I should incorporate borders on all of the shapes, instead of just the ones that had the same color next to each other to reduce confusion on the meaning of the borders. I implemented these suggestions, and went on to turn these borders into a way to portray other variables that might have impacted my study by using different colors to outline the shapes based on the variables.
 
-### b. Sharing your affective visualization 
+### b. Sharing your affective visualization
 
 Completed this activity during workshop in Week 10.
