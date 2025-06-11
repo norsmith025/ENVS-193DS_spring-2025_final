@@ -26,7 +26,7 @@ library(here) # load here
 
 # read in data
 sst <- read_csv("data/SST_update2023.csv") # create sst object from SST_update2023 
-occdist <- read_csv("data/occdist.csv") # create occdist object from occdist
+nest_boxes <- read_csv("data/occdist.csv") # create nest_boxes object from occdist
 ```
 
 # Part 2. Problems
@@ -84,3 +84,33 @@ ggplot(sst_clean, aes(x = month, y = mean_monthly_sst, group = year, color = yea
         legend.title = element_text(size = 10),
         legend.text = element_text(size=8))
 ```
+
+## Problem 3. Data Analysis
+
+### a. Response variable
+
+The 1s and 0s in this data set indicate whether or not there were birds nesting in a nesting box, and what kind. A 0 in the column indicated that that species was not present in the nesting box, while a 1 indicated that species was using the nesting box.
+
+### b. Purpose of study
+
+The Swift Parrots are an endangered species, and the nesting boxes were implemented as part of conservation efforts for this study, and the Common Starlings and Tree Martins are considered competition to the parrots success. They do not rely on the nesting boxes, but use them anyway, which can displace the Swift Parrots and decrease their nesting grounds.
+
+### c. Difference in "seasons"
+
+The "seasons," or years, referred to in this study are 2016 and 2019, and they represent the breeding seasons of the Swift Parrots. Comparing the two years can help analyze whether or not the parrots nesting patterns with the artificial nesting boxes are consistent, or if they change depending on season specific factors.
+
+### d. Table of models
+
+### e. Run the models
+
+### f. Check the diagnostics
+
+### g. Select the best model
+
+### h. Visualize the model predictions
+
+### i. Write a caption for your figure
+
+### j. Calculate model predictions
+
+### k. Interpret your results
