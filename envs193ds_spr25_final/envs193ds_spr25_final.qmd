@@ -2,7 +2,12 @@
 title: "envs193ds_spr25_final"
 author: "Nora Smith"
 date: 2025-06-10
-format: html
+format: 
+  html:
+    toc: true 
+    toc-floating:
+      enabled: true
+      position: left
 editor: visual
 ---
 
@@ -64,7 +69,8 @@ str(sst_clean) # display structure of cleaned data
 ### b. Visualize the data
 
 ```{r}
-#| warnings: FALSE # hide warnings
+#| warning: FALSE # hide warnings
+#| message: FALSE # hide messages 
 
 # recreate the visualization
 ggplot(sst_clean, aes(x = month, y = mean_monthly_sst, group = year, color = year)) + # create plot
