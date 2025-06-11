@@ -7,3 +7,23 @@ editor: visual
 ---
 
 # Set up
+
+```{r}
+#| message: FALSE
+
+# read in packages 
+library(tidyverse) # load tidyverse
+library(janitor) # load janitor
+library(MuMIn) # load MuMIn
+library(readxl) # load readxl
+library(lubridate) # load lubridate
+library(DHARMa) # load DHARMa
+library(flextable) # load flextable
+library(rstatix) # load rstatix
+library(gt) # load gt
+library(here) # load here
+
+# read in data
+sst <- read_csv("data/SST_update2023.csv") # create sst object from SST_update2023 
+occdist <- read_csv("data/occdist.csv") # create occdist object from occdist
+```
