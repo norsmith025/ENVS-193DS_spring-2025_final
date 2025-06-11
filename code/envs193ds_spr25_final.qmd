@@ -27,3 +27,17 @@ library(here) # load here
 sst <- read_csv("data/SST_update2023.csv") # create sst object from SST_update2023 
 occdist <- read_csv("data/occdist.csv") # create occdist object from occdist
 ```
+
+# Problem 1. Research writing
+
+### a. Transparent statistical methods
+
+In part 1, they likely used a Pearson's r test, since they analyzed the relationship between two continuous variables (distance and annual nitrogen load). In part 2, they likely used ANOVA, since they compared the mean/average nitrogen loads between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands).
+
+### b. More information needed
+
+One thing that could have been added to the results section is a post-hoc test, which would communicate which groups differ, instead of just telling that there is a difference between the groups; an example of a post-hoc test that could be used is the Tukey's Honestly Significant Difference (HSD). This would allow the results to go beyond "we reject the null hypothesis that there is no difference in average nitrogen load..." and be able to communicate which of the groups from urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands differ the most. Another thing that would add more context to the results could be providing the mean of each groups' nitrogen load and their standard deviations. Knowing the mean for each groups' would allow the reader to know how much the nitrogen load differs per source category, and the standard deviations would help show dispersed the nitrogen load is per source category.
+
+### c. Suggestions for rewriting
+
+We found that there was a direct relationship between sources' distance from headwaters (km) and the annual total nitrogen loads (km). (Pearson's r test: *r* = correlation coefficient, *p* = 0.03, α = significance level, *n* = sample size). We also found that nitrogen load varied by source type, with certain land-uses impacting the nitrogen load more than others, indicating that land-use can influence nitrogen loading. The post-hoc Tukey's HSD test identifies \_\_\_ as the source(s) that differ(s) the most. (ANOVA: *F* = F-statistic, *p* = 0.02, α = significance level, *df* = degress of freedom, *n* = sample size)
