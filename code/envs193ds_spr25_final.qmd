@@ -23,6 +23,7 @@ library(flextable) # load flextable
 library(rstatix) # load rstatix
 library(gt) # load gt
 library(here) # load here
+library(scales) # load scales
 
 # read in data
 sst <- read_csv("data/SST_update2023.csv") # create sst object from SST_update2023 
@@ -69,20 +70,23 @@ str(sst_clean) # display structure of cleaned data
 ### b. Visualize the data
 
 ```{r}
+#| warnings: FALSE # hide warnings
+
 # recreate the visualization
-ggplot(sst_clean, aes(x = month, y = mean_monthly_sst, group = year, color = year)) + geom_line(linewidth = 1) +
-  geom_point(size = 2) + 
-  scale_color_manual(values = colorRampPalette(c("darkseagreen2", "black"))(6)) + 
-  labs(x = "Month",
-       y = "Mean monthly sea surface temperature (°C)",
-       color = "Year") +
-  theme_minimal() +
-  theme(panel.grid = element_blank(),
-        panel.border = element_rect(color = "darkgrey", fill = NA),
-        panel.background = element_rect(fill = "white"),
-        legend.position = c(0.15, 0.8),
-        legend.title = element_text(size = 10),
-        legend.text = element_text(size=8))
+ggplot(sst_clean, aes(x = month, y = mean_monthly_sst, group = year, color = year)) + # create plot
+  geom_line(linewidth = 1) + # add lines 
+  geom_point(size = 2) + # add points
+  scale_color_manual(values = colorRampPalette(c("darkseagreen2", "black"))(6)) + # manually pick color gradient
+  labs(x = "Month", # label x-axis
+       y = "Mean monthly sea surface temperature (°C)", # label y-axis
+       color = "Year") + # color gradient depicts years
+  theme_minimal() + # use minimal theme
+  theme(panel.grid = element_blank(), # remove grid lines 
+        panel.border = element_rect(color = "darkgrey", fill = NA), # make plot border dark grey line
+        panel.background = element_rect(fill = "white"), # make panel background white
+        legend.position = c(0.15, 0.8), # position the legend
+        legend.title = element_text(size = 10), # change legend title font size
+        legend.text = element_text(size=8)) # change legend labels font size
 ```
 
 ## Problem 3. Data Analysis
@@ -101,9 +105,84 @@ The "seasons," or years, referred to in this study are 2016 and 2019, and they r
 
 ### d. Table of models
 
+```{r}
+#| echo: FALSE # do not include in source code
+#| output: FALSE # do not include output
+
+nest_boxes <- nest_boxes %>% # clean column names
+  rename_all(~str_replace_all(., " ", "_")) # replace spaces with underscores "_"
+
+nest_boxes_clean <- nest_boxes %>% # convert data type
+  mutate(season = as.factor(season), # convert season to a factor (2016 or 2019)
+         sp = as.numeric(as.character(sp)), # convert sp occupancy to numeric (0 or 1)
+         edge_distance = as.numeric(edge_distance)) # edge_distance is numeric 
+
+nest_boxes_clean |> slice_sample(n = 5) # show a sample of 5 rows from the cleaned data
+str(nest_boxes) # display structure of cleaned data
+```
+
+```{r}
+# create model summary table of 4 models
+model_table <- tibble(model_number = 1:4, # give models numbers (1-4)
+                      season = c("No", "Yes", "Yes", "No"), # Does the model include season? 
+                      distance_to_forest_edge = c("No", "Yes", "No", "Yes"), # does the model include distance to forest edge? 
+                      model_description = c("Null Model (no predictors)", # description of model with neither variable
+                                            "FUll Model (season and edge distance)", # description of model with both variables 
+                                            "Season-Only Model", # description of model with only season
+                                            "Distance-Only Model")) # description of model with only distance 
+
+print(model_table) # display model summary table 
+```
+
 ### e. Run the models
 
+```{r}
+#| output: FALSE 
+
+# model 1: null model (no predictors)
+Model_1 <- glm(sp ~ 1, # include neither variable
+              data = nest_boxes_clean, # data frame
+              family = binomial) # data is binomial
+
+# model 2: full model (season and edge distance)
+Model_2 <- glm(sp ~ season + edge_distance, # include both variables
+              data = nest_boxes_clean, # data frame
+              family = binomial) # data is binomial
+
+# model 3: season-only model
+Model_3 <- glm(sp ~ season, # include only season
+              data = nest_boxes_clean, # data frame
+              family = binomial) # data is binomial
+
+# model 4: distance-only model
+Model_4 <- glm(sp ~ edge_distance, # include only distance to forest edge
+              data = nest_boxes_clean, # data frame
+              family = binomial) # data is binomial
+
+```
+
 ### f. Check the diagnostics
+
+```{r}
+#| warning: FALSE
+
+# null model
+sim1 <- simulateResiduals(Model_1) # create sim1
+plot(sim1) # plot sim1
+
+# full model
+sim2 <- simulateResiduals(Model_2) # create sim2
+plot(sim2) # plot sim2
+
+# season-only model
+sim3 <- simulateResiduals(Model_3) # create sim3
+plot(sim3) # plot sim3
+
+# distance-only model
+sim4 <- simulateResiduals(Model_4) # create sim4
+plot(sim4) # plot sim4
+
+```
 
 ### g. Select the best model
 
