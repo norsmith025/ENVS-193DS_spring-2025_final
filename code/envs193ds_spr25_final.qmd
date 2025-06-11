@@ -6,7 +6,9 @@ format: html
 editor: visual
 ---
 
-# Set up
+# Part 1. Set up tasks
+
+## Set up
 
 ```{r}
 #| message: FALSE
@@ -16,7 +18,6 @@ library(tidyverse) # load tidyverse
 library(janitor) # load janitor
 library(MuMIn) # load MuMIn
 library(readxl) # load readxl
-library(lubridate) # load lubridate
 library(DHARMa) # load DHARMa
 library(flextable) # load flextable
 library(rstatix) # load rstatix
@@ -28,7 +29,9 @@ sst <- read_csv("data/SST_update2023.csv") # create sst object from SST_update20
 occdist <- read_csv("data/occdist.csv") # create occdist object from occdist
 ```
 
-# Problem 1. Research writing
+# Part 2. Problems
+
+## Problem 1. Research writing
 
 ### a. Transparent statistical methods
 
@@ -41,3 +44,43 @@ One thing that could have been added to the results section is a post-hoc test, 
 ### c. Suggestions for rewriting
 
 We found that there was a direct relationship between sources' distance from headwaters (km) and the annual total nitrogen loads (km). (Pearson's r test: *r* = correlation coefficient, *p* = 0.03, α = significance level, *n* = sample size). We also found that nitrogen load varied by source type, with certain land-uses impacting the nitrogen load more than others, indicating that land-use can influence nitrogen loading. The post-hoc Tukey's HSD test identifies \_\_\_ as the source(s) that differ(s) the most. (ANOVA: *F* = F-statistic, *p* = 0.02, α = significance level, *df* = degress of freedom, *n* = sample size)
+
+## Problem 2
+
+### a. Cleaning and Summarizing
+
+```{r}
+sst_clean <- sst |> # create sst_clean object from sst data frame
+  mutate(date = ymd(date)) |> # convert to date format
+  mutate(year = year(date), # pull out year
+         month = month(date, label = TRUE, abbr = TRUE)) |> # pull out month as factor
+  filter(year %in% 2018:2023) |> # filter years, keeping 2018-2023
+  group_by(year, month) |> # group by year and month
+  summarize(mean_monthly_sst = mean(temp, na.rm = TRUE), # average temp across sites
+            .groups = "drop") |> # return data frame ungrouped
+  mutate(year = factor(year)) # convert year to a factor
+
+# create data frame
+sst_clean |> slice_sample(n = 5) # display sample of 5 rows from cleaned data
+str(sst_clean) # display structure of cleaned data 
+  
+```
+
+### b. Visualize the data
+
+```{r}
+# recreate the visualization
+ggplot(sst_clean, aes(x = month, y = mean_monthly_sst, group = year, color = year)) + geom_line(linewidth = 1) +
+  geom_point(size = 2) + 
+  scale_color_manual(values = colorRampPalette(c("darkseagreen2", "black"))(6)) + 
+  labs(x = "Month",
+       y = "Mean monthly sea surface temperature (°C)",
+       color = "Year") +
+  theme_minimal() +
+  theme(panel.grid = element_blank(),
+        panel.border = element_rect(color = "darkgrey", fill = NA),
+        panel.background = element_rect(fill = "white"),
+        legend.position = c(0.15, 0.8),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size=8))
+```
