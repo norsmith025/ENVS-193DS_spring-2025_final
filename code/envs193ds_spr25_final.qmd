@@ -13,7 +13,7 @@ editor: visual
 ```{r}
 #| message: FALSE # hide messages
 
-# read in packages 
+# read in packages I might use
 library(tidyverse) # load tidyverse
 library(janitor) # load janitor
 library(MuMIn) # load MuMIn
@@ -24,6 +24,7 @@ library(rstatix) # load rstatix
 library(gt) # load gt
 library(here) # load here
 library(scales) # load scales
+library(stats)
 
 # read in data
 sst <- read_csv("data/SST_update2023.csv") # create sst object from SST_update2023 
@@ -233,4 +234,27 @@ This plot displays the predicted probability of Swift Parrot nest box occupancy,
 
 ### j. Calculate model predictions
 
+```{r}
+# create additional data points for distances to forest edge and seasons
+expanded_nest_boxes <- expand.grid(edge_distance = c(0, 900), # at and far from forest edge
+                                   season = factor(c(2016, 2019)), # season as a factor
+                                   levels = levels(nest_boxes_clean$season)) # keep levels the same
+
+predictions <- predict(Model_2, # use model 2 for predictions
+                       newdata = expanded_nest_boxes, # use expanded data frame
+                       type = "response", # give numerical response
+                       se.fit = TRUE) # display standard errors from model 2
+
+predicted_df <- expanded_nest_boxes %>% # create predicted_df object from expanded_nest_boxes
+  mutate(predicted_prob = predictions$fit, # use predicted probabilities
+         lower_95 = predictions$fit - 1.96 * predictions$se.fit, # lower CI bound
+         upper_95 = predictions$fit + 1.96 * predictions$se.fit) # upper CI bound
+
+print(predicted_df) # display predictions
+```
+
 ### k. Interpret your results
+
+As nest boxes get farther away from the edges of the forest in both seasons (2016 and 2019) the Swift Parrot nest box occupancy decreases, which can be observed in the trend-lines present in *Figure 1*. This is also shown in the predicted probability based off of Model 2, with the predicted occupancy near the edge of the forest was 48% in 2016 and 30% in 2019 at 0 meters. These predicted occupancies drop as the distance increases from the forest edge with 12% in 2016 and 6% in 2019 at 900 meters. The correlation between distance to the edge of the forest and nest box occupancy patterns indicates that the Swift Parrots prefer to live closer to the edges of the forest, whether it be for increased access to resources or less competitors, and the Common Starlings and Tree Martins may prefer to be farther into the forest. Recognizing this pattern is important, since it allows conversationalists to add more nest boxes to the edge areas of the forest, since that is where the Swift Parrots will benefit from them the most.
+
+## 
