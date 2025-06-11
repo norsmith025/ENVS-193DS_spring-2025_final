@@ -164,7 +164,8 @@ Model_4 <- glm(sp ~ edge_distance, # include only distance to forest edge
 ### f. Check the diagnostics
 
 ```{r}
-#| warning: FALSE
+#| warnings: FALSE
+#| messages: FALSE
 
 # null model
 sim1 <- simulateResiduals(Model_1) # create sim1
@@ -186,9 +187,48 @@ plot(sim4) # plot sim4
 
 ### g. Select the best model
 
+```{r}
+aic_results <- AICc(Model_1, Model_2, Model_3, Model_4) # calculate AICc values for all models
+aic_results$Model <- c("Null Model", "Full Model", "Season-Only Model", "Distance-Only Model") # label models for readability
+aic_results <- aic_results %>% arrange(AICc) # Sort by AIC 
+
+print(aic_results) # display table of AIC scores 
+```
+
+Given the AIC values, the Full Model that includes both the season and the distance to the forest edge is the best model when analyzing the Swift Parrots occupancy and use of the nesting boxes.
+
 ### h. Visualize the model predictions
 
+```{r}
+#| warning: FALSE
+#| message: FALSE
+
+ggplot(nest_boxes_clean, aes(x = edge_distance, y = sp, color = season)) +
+  geom_jitter(width = 8, height = 0.05, alpha = 0.5) +
+  stat_smooth(method = "glm",
+              methods.args = list(family = "binomial"),
+              se = TRUE,
+              fullrange = TRUE,
+              aes(fill = season)) +
+  scale_y_continuous(name = "Probability of Swift Parrot Nest Box Occupancy", limits = c(0, 1)) +
+  scale_x_continuous(name = "Distance to the Forest Edge (m)") +
+  theme_minimal() +
+  theme(panel.grid = element_blank(), 
+        panel.border = element_rect(color = "darkgrey", fill = NA)) +
+  scale_color_manual(values = c("cadetblue4", "burlywood4")) +
+  scale_fill_manual(values = c("cadetblue2", "bisque2")) +
+  labs(title = "Swift Parrot Nest Box Occupancy Based on Model Predictions",
+       color = "Season",
+       fill = "Season")
+```
+
 ### i. Write a caption for your figure
+
+***Figure 1.** Swift Parrot Nest Box Occupancy Based on Model Predictions*.
+
+This plot displays the predicted probability of Swift Parrot nest box occupancy, using distance to the forest edge, and season (2016 and 2019) as the explanatory variables. The jittered points represent the probability of Swift Parrot occupancy in the nest boxes, and the ribbons indicate the 95% confidence intervals based on model predictions.
+
+***Source*****:** Stojanovic, Dejan et al. (2021). Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird. \[Dataset\]. Dryad. https://doi.org/10.5061/dryad.83bk3j9sb
 
 ### j. Calculate model predictions
 
