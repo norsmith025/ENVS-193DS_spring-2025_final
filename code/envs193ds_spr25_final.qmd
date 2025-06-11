@@ -11,7 +11,7 @@ editor: visual
 ## Set up
 
 ```{r}
-#| message: FALSE
+#| message: FALSE # hide messages
 
 # read in packages 
 library(tidyverse) # load tidyverse
@@ -106,8 +106,8 @@ The "seasons," or years, referred to in this study are 2016 and 2019, and they r
 ### d. Table of models
 
 ```{r}
-#| echo: FALSE # do not include in source code
-#| output: FALSE # do not include output
+#| echo: FALSE # hide source code
+#| output: FALSE # hide output
 
 nest_boxes <- nest_boxes %>% # clean column names
   rename_all(~str_replace_all(., " ", "_")) # replace spaces with underscores "_"
@@ -137,7 +137,7 @@ print(model_table) # display model summary table
 ### e. Run the models
 
 ```{r}
-#| output: FALSE 
+#| output: FALSE # hide output
 
 # model 1: null model (no predictors)
 Model_1 <- glm(sp ~ 1, # include neither variable
@@ -164,8 +164,8 @@ Model_4 <- glm(sp ~ edge_distance, # include only distance to forest edge
 ### f. Check the diagnostics
 
 ```{r}
-#| warnings: FALSE
-#| messages: FALSE
+#| warning: FALSE # hide warnings
+#| message: FALSE # hide messages
 
 # null model
 sim1 <- simulateResiduals(Model_1) # create sim1
@@ -200,26 +200,27 @@ Given the AIC values, the Full Model that includes both the season and the dista
 ### h. Visualize the model predictions
 
 ```{r}
-#| warning: FALSE
-#| message: FALSE
+#| warning: FALSE # hide warnings
+#| message: FALSE # hide messages
 
-ggplot(nest_boxes_clean, aes(x = edge_distance, y = sp, color = season)) +
-  geom_jitter(width = 8, height = 0.05, alpha = 0.5) +
-  stat_smooth(method = "glm",
-              methods.args = list(family = "binomial"),
-              se = TRUE,
-              fullrange = TRUE,
-              aes(fill = season)) +
-  scale_y_continuous(name = "Probability of Swift Parrot Nest Box Occupancy", limits = c(0, 1)) +
-  scale_x_continuous(name = "Distance to the Forest Edge (m)") +
-  theme_minimal() +
-  theme(panel.grid = element_blank(), 
-        panel.border = element_rect(color = "darkgrey", fill = NA)) +
-  scale_color_manual(values = c("cadetblue4", "burlywood4")) +
-  scale_fill_manual(values = c("cadetblue2", "bisque2")) +
-  labs(title = "Swift Parrot Nest Box Occupancy Based on Model Predictions",
-       color = "Season",
-       fill = "Season")
+ggplot(nest_boxes_clean, aes(x = edge_distance, y = sp, color = season)) + # create plot
+  geom_jitter(width = 8, height = 0.05, alpha = 0.5) + # add jittered data points
+  stat_smooth(method = "glm", # use generalized linear model 
+              methods.args = list(family = "binomial"), # data is binomial in logistic regression
+              se = TRUE, # display 95% confidence intervals 
+              fullrange = TRUE, # line spans whole x-axis range
+              aes(fill = season)) + # fill confidence interval ribbon with same color as season
+  scale_y_continuous(name = "Probability of Swift Parrot Nest Box Occupancy", # label y-axis
+                     limits = c(0, 1)) + # y-axis probability range
+  scale_x_continuous(name = "Distance to the Forest Edge (m)") + # label x-axis
+  theme_minimal() + # use minimal theme
+  theme(panel.grid = element_blank()) + # remove gridlines 
+  scale_color_manual(values = c("cadetblue4", "burlywood4")) + # manually set season colors
+  scale_fill_manual(values = c("cadetblue2", "bisque2")) + # manually set confidence interval colors
+  labs(title = "Swift Parrot Nest Box Occupancy Based on Model Predictions", # add plot title
+       color = "Season", # add legend label for line color
+       fill = "Season") # add legend label for confidence interval color
+
 ```
 
 ### i. Write a caption for your figure
