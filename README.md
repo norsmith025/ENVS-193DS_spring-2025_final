@@ -3,6 +3,15 @@
 ENVS 193DS Final Assignment Repository
 
 ## General Information 
+This is repo is mine (GitHub username: norsmith025) for the ENVS 193DS Statistics for Environmental Studies Spring 2025 Final.
+
+I used 2 data sets in this repo. They are from:
+
+-    SBC LTER's data catalog, specifically "Daily sea surface temperature in Santa Barbara channel between 1982 and 2023" by L. Kui (Source: Kui, L. 2024. Daily sea surface temperature in Santa Barbara channel between 1982 and 2023 ver 3. Environmental Data Initiative. <https://doi.org/10.6073/pasta/e930954949b2635928b8be6824630f84>. Accessed 2025-06-11.)
+
+-   DRYAD, "Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird" by Stojanovic et al. (Source: Stojanovic, Dejan et al. (2021). Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird [Dataset]. Dryad. <https://doi.org/10.5061/dryad.83bk3j9sb>)
+
+Throughout the contents of this repo, I give examples of statistical communication, cleaning, summarizing, and visualizing data sets, both identifying and executing statistical methods in order to visualize and communicate the results of statistical tests, and briefly discussing affective and explorative visualizations in statistics.
 
 ## Data and File Overview
 
