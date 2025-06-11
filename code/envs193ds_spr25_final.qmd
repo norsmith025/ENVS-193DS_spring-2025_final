@@ -257,4 +257,18 @@ print(predicted_df) # display predictions
 
 As nest boxes get farther away from the edges of the forest in both seasons (2016 and 2019) the Swift Parrot nest box occupancy decreases, which can be observed in the trend-lines present in *Figure 1*. This is also shown in the predicted probability based off of Model 2, with the predicted occupancy near the edge of the forest was 48% in 2016 and 30% in 2019 at 0 meters. These predicted occupancies drop as the distance increases from the forest edge with 12% in 2016 and 6% in 2019 at 900 meters. The correlation between distance to the edge of the forest and nest box occupancy patterns indicates that the Swift Parrots prefer to live closer to the edges of the forest, whether it be for increased access to resources or less competitors, and the Common Starlings and Tree Martins may prefer to be farther into the forest. Recognizing this pattern is important, since it allows conversationalists to add more nest boxes to the edge areas of the forest, since that is where the Swift Parrots will benefit from them the most.
 
-## 
+## Problem 4. Affective and exploratory visualizations
+
+### a. Comparing visualizations
+
+i.  The visualizations I created for Homework 2 and Homework 3 are different since my Homework 2 visualization shows my data in a very technical plot, showing the purely statistical side of my findings at the time I made it. On the other hand, my visualization from Homework 3 represents my data in a much more abstract manner, displaying the data as shapes and colors instead of only the data points on a plot with a trend-line. I think that to someone not well-versed in statistics, my affective visualization would not only make more sense to them, but be more visually interesting as well.
+
+ii. Both of my visualizations successfully display the data I found throughout my experiment. I think they both show the relationship between my water consumption and my productivity levels effectively.
+
+iii. In my Homework 2 visualization, I only show the correlation between my hydration and productivity levels, and at the time that I made the visualization, I had not collected a lot of data so it does not completely accurately represent my final findings. In my Homework 3 visualization I had a lot more data to work with, so I was able to expand my piece to show the correlation between more things, such as how much I slept, and if I went outside that day or not, in addition to my water consumption. I think that because of this, the patterns varied between visualizations, simply because the Homework 3 visualization was able to communicate how not *only* hydration levels might have impacted my productivity levels.
+
+iv. During Week 9's workshop, the biggest piece of feedback I received was that I should incorporate borders on all of the shapes, instead of just the ones that had the same color next to each other to reduce confusion on the meaning of the borders. I implemented these suggestions, and went on to turn these borders into a way to portray other variables that might have impacted my study by using different colors to outline the shapes based on the variables.
+
+### b. Sharing your affective visualization 
+
+Completed this activity during workshop in Week 10.
