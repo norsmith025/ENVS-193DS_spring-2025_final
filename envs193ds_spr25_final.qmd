@@ -1,3 +1,7 @@
+```{r}
+
+```
+
 ---
 title: "envs193ds_spr25_final"
 author: "Nora Smith"
@@ -23,6 +27,7 @@ library(tidyverse) # load tidyverse
 library(MuMIn) # load MuMIn
 library(DHARMa) # load DHARMa
 library(stats) # load stats
+library(ggeffects) # load ggeffects
 
 # read in data
 sst <- read_csv("data/SST_update2023.csv") # create sst object from SST_update2023 
@@ -220,6 +225,46 @@ ggplot(nest_boxes_clean, aes(x = edge_distance, y = sp, color = season)) + # cre
   labs(title = "Swift Parrot Nest Box Occupancy Based on Model Predictions", # add plot title
        color = "Season", # add legend label for line color
        fill = "Season") # add legend label for confidence interval color
+
+```
+
+```{r}
+#| warning: FALSE # hide warnings
+#| message: FALSE # hide messages
+
+nest_boxes_clean$season <- as.factor(nest_boxes_clean$season) # 
+mod_predictions <- ggpredict(Model_2, terms = c("edge_distance", "season"))
+
+ggplot() +
+  geom_point(data = nest_boxes_clean,
+             aes( x = edge_distance,
+                  y = as.numeric(sp),
+                  color = season),
+             size = 2,
+             alpha = 0.3,
+             position = position_jitter(height = 0.00)) +
+  geom_ribbon(data = mod_predictions,
+              aes(x =x,
+                  ymin = conf.low,
+                  ymax = conf.high,
+                  fill = group),
+              alpha = 0.2) +
+  geom_line(data = mod_predictions,
+            aes(x =x,
+                y = predicted,
+                color = group),
+            size = 1) +
+  scale_y_continuous("Probability of Swift Parrot Nest Box Occupancy",
+                     limits = c(0, 1),
+                     breaks = seq(0, 1, 0.2)) + 
+  theme_minimal() +
+  theme(panel.grid = element_blank()) +
+  scale_color_manual(values = c("cadetblue4", "burlywood4")) +
+  scale_fill_manual(values = c("cadetblue2", "bisque2")) +
+  labs(title = "Swift Parrot Nest Box Occupancy Based on Model Predictions",
+       x = "Distance to Forest Edge (m)",
+       color = "Seasons",
+       fill = "Seasons")
 
 ```
 
